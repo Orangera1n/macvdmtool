@@ -1,6 +1,6 @@
 # Apple Silicon to Apple Silicon VDM tool
 
-In progress version with basic support for iPhone 15 & support for listing actions.
+In progress version with basic support for iPhone 15 & support for listing actions, and support for enabling KIS.
 
 This tool lets you get a serial console on an Apple Silicon device and reboot it remotely, using only another Apple Silicon device running macOS and a standard Type C cable.
 
@@ -17,7 +17,7 @@ This is based on portions of [ThunderboltPatcher](https://github.com/osy/Thunder
 
 Thanks to t8012.dev and mrarm for assistance with the VDM and Ace2 host interface commands.
 
-## Note about macOS 12
+## Note about macOS 12-14
 
 To have access to the serial console device on macOS Monterey (12), you need to disable the `AppleSerialShim` extension.
 
@@ -51,6 +51,8 @@ You can now reboot: macOS should start as normal, and the serial device `/dev/cu
 
 To revert back to the default kernel, enter 1TR again, access Utilities>Startup security and switch to full or reduced security.
 
+NOTE: This is not required for macOS Big Sur, or Sequoia.
+
 ## Building
 
 Install the XCode commandline tools and type `make`.
@@ -74,6 +76,8 @@ Commands:
   reboot serial - reboot the target and enter serial mode
   dfu - put the target into DFU mode
   nop - do nothing
+  kis - Enable KIS for JTAG, only possible on CPFM 00 devices
+  usbdfu - disable KIS and switch to USB
 ```
 
 Use `/dev/cu.debug_console` on the local machine as your serial device. To use it with m1n1, `export M1N1DEVICE=/dev/cu.debug-console`.
