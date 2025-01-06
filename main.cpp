@@ -267,6 +267,48 @@ int DoSerial(HPMPluginInstance &inst, int no)
     return 0;
 }
 
+int DoKIS(HPMPluginInstance &inst, int no)
+{
+    printf("Putting target into KIS mode...");
+    
+    std::vector<uint32_t> kis{0x5ac8012, 0x824606};
+
+    DoVDM(inst, no, kis);
+    
+    printf("OK\n");
+    
+    printf("You can now JTAG via KIS on astris :)\n");
+    return 0;
+}
+
+int DoSWD(HPMPluginInstance &inst, int no)
+{
+    printf("Putting target into SWD mode...");
+    
+    std::vector<uint32_t> kis{0x5ac8012, 0x1840206};
+
+    DoVDM(inst, no, kis);
+    
+    printf("OK\n");
+    
+    printf("You can now JTAG via SWD on astris :)\n");
+    return 0;
+}
+
+int DoUSBDFU(HPMPluginInstance &inst, int no)
+{
+    printf("Putting target into USB DFU mode...");
+    
+    std::vector<uint32_t> usbdfu{0x5ac8012, 0x820606};
+
+    DoVDM(inst, no, usbdfu);
+    
+    printf("OK\n");
+    
+    printf("Device is now in USB DFU\n");
+    return 0;
+}
+
 int DoReboot(HPMPluginInstance &inst, int no)
 {
     printf("Rebooting target into normal mode... ");
@@ -329,6 +371,7 @@ int main2(int argc, char **argv)
         printf("  dfu - put the target into DFU mode\n");
         printf("  nop - do nothing\n");
         printf("  actions - get supported actions\n");
+        printf("  kis - enable KIS for jtag on jtagable boards\n");
         return 1;
     }
 
@@ -378,6 +421,12 @@ int main2(int argc, char **argv)
             return DoReboot(*inst, no);
     } else if (cmd == "dfu")
         return DoDFU(*inst, no);
+    else if (cmd == "kis")
+        return DoKIS(*inst, no);
+    else if (cmd == "swd")
+        return DoSWD(*inst, no);
+    else if (cmd == "usbdfu")
+        return DoUSBDFU(*inst, no);
     else if (cmd == "nop")
         return 0;
     else if (cmd == "actions")
